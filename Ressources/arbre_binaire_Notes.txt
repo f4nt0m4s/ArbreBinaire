@@ -1,0 +1,681 @@
+====================================
+-- Cours Arbre binaire
+====================================
+arbre Binaire
+	x
+       / \
+      /   \
+     /     \
+    -       -
+   / \     / \
+  /   \   /   \
+ +    /  3     y
+/ \  / \
+a b x   2
+
+sag(B) : (Sous Arbre Gauche)
+    -   
+   / \  
+  /   \ 
+ +    / 
+/ \  / \
+a b x   2
+
+sad(B) : (Sous Arbre Droit)
+   -
+  / \
+ /   \
+3     y
+
+Exemple : 101
+
+     racine
+        \
+         \
+          \
+           1
+          /
+         /
+        /
+       10
+        \
+         \
+          \
+          101
+
+en java (préfixe)                  en math(infixe)
+
+plus(matA,matB)                    matA+matB
+mult(matA,matB)                    matAxmatB
+
+
+============================================
+Parcours préfixe RGD (Racine Gauche Droite)
+============================================
+
+SI B est non vide ALORS
+	effectuer le traitement sur la racine r de B
+	appel récursif sur le sous arbre gauche
+	appel récursif sur le sous arbre droit
+FSI 
+
+
+Exemple du parcours préfixe :
+
+B
+        x
+       / \
+      /   \
+     /     \
+    -       -
+   / \     / \
+  /   \   /   \
+ +    /  3     y
+/ \  / \
+a b x   2
+
+prefixe(B) :
+  | effectuer le traitement sur la racine r de B : x
+  | appel récursif sur le sous arbre gauche : prefixe(sag(B)) = prefixe(B0)
+  | |           B0
+  | |            -   
+  | |           / \  
+  | |          /   \ 
+  | |         +    / 
+  | |        / \  / \
+  | |        a b  x 2
+  | | 
+  | | effectuer le traitement sur la racine r de B0 : -
+  | | appel récursif sur le sous arbre gauche : prefixe(sag(B0)) = prefixe(B00)
+  | | |        B00
+  | | |         +
+  | | |        / \
+  | | |        a b
+  | | | effectuer le traitement sur la racine r de B00 : +
+  | | | appel récursif sur le sous arbre gauche : prefixe(sag(B00)) = prefixe(B000)
+  | | | |      B000
+  | | | |        a
+  | | | | effectuer le traitement sur la racine r de B000 : a
+  | | | | appel récursif sur le sous arbre gauche : prefixe(sag(B000)) = prefixe(B0000) : on ne fait rien car B0000 est vide
+  | | | | appel récursif sur le sous arbre droit  : prefixe(sad(B000)) = prefixe(B0001) : on ne fait rien car B0001 est vide
+  | | | appel récursif sur le sous arbre droit  : prefixe(sad(B00)) = prefixe(B001)
+  | | | |      B001
+  | | | |        b
+  | | | | effectuer le traitement sur la racine r de B001 : b
+  | | | | appel récursif sur le sous arbre gauche : prefixe(sag(B001)) = prefixe(B0010) : on ne fait rien car B0010 est vide
+  | | | | appel récursif sur le sous arbre droit  : prefixe(sad(B001)) = prefixe(B0011) : on ne fait rien car B0011 est vide
+  | | appel récursif sur le sous arbre droit  : prefixe(sad(B0)) = prefixe(B01)
+  | | |         B01
+  | | |          / 
+  | | |         / \
+  | | |         x 2
+  | | | effectuer le traitement sur la racine r de B01 : /
+  | | | appel récursif sur le sous arbre gauche : prefixe(sag(B01)) = prefixe(B010)
+  | | | |      B010
+  | | | |        x
+  | | | | ce qui donne simple : x (c'est une feuille)
+  | | | appel récursif sur le sous arbre droit  : prefixe(sad(B01)) = prefixe(B011)
+  | | | |      B011
+  | | | |        2
+  | | | | ce qui donne simple : 2 (c'est une feuille)
+  | appel récursif sur le sous arbre droit  : prefixe(sad(B)) = prefixe(B1)
+  | |        B1
+  | |         -
+  | |        / \
+  | |       /   \
+  | |      3     y
+  | | effectuer le traitement sur la racine r de B1 : -
+  | | appel récursif sur le sous arbre gauche : prefixe(sag(B1)) = prefixe(B10)
+  | | |        B10
+  | | |         3
+  | | | ce qui donne simple : 3 (c'est une feuille)
+  | | appel récursif sur le sous arbre droit  : prefixe(sad(B1)) = prefixe(B11)
+  | | |        B11
+  | | |         y
+  | | | ce qui donne simple : y (c'est une feuille)
+
+résultat : x - + a b / x 2 - 3 y
+mult(moins(plus(a,b),div(x,2)),moins(3,y))
+mult( moins( plus(a,b),div(x,2) ) , moins(3,y) )
+
+( pour trouver la solution comme un labyrinthe mettre main gauche sans quitter le mur pour parcourir tout le périmètre du labyrinthe)
+
+===========================================
+PARCOURS INFIXE GRD (Gauche Racine Droite)
+===========================================
+
+SI B est non vide ALORS
+	appel récursif sur le sous arbre gauche
+	effectuer le traitement sur la racine r de B
+	appel récursif sur le sous arbre droit
+FSI
+
+résultat : a + b - x / 2 x 3 - y
+
+
+=============================================
+PARCOURS POSTFIXE GDR (Gauche Droite Racine)
+=============================================
+
+SI B est non vide ALORS
+	appel récursif sur le sous arbre gauche
+	appel récursif sur le sous arbre droit
+	effectuer le traitement sur la racine r de B
+FSI
+
+postfixe(B) :
+  | appel récursif sur le sous arbre gauche : postfixe(sag(B)) = postfixe(B0)
+  | |           B0
+  | |            -   
+  | |           / \  
+  | |          /   \ 
+  | |         +    / 
+  | |        / \  / \
+  | |        a b  x 2
+  | | 
+  | | appel récursif sur le sous arbre gauche : postfixe(sag(B0)) = postfixe(B00)
+  | | |        B00
+  | | |         +
+  | | |        / \
+  | | |        a b
+  | | | appel récursif sur le sous arbre gauche : postfixe(sag(B00)) = postfixe(B000)
+  | | | |      B000
+  | | | |        a
+  | | | | ce qui donne simple : a (c'est une feuille)
+  | | | appel récursif sur le sous arbre droit  : postfixe(sad(B00)) = postfixe(B001)
+  | | | |      B001
+  | | | |        b
+  | | | | ce qui donne simple : b (c'est une feuille)
+  | | | effectuer le traitement sur la racine r de B00 : +
+  | | appel récursif sur le sous arbre droit  : postfixe(sad(B0)) = postfixe(B01)
+  | | |         B01
+  | | |          / 
+  | | |         / \
+  | | |         x 2
+  | | | appel récursif sur le sous arbre gauche : postfixe(sag(B01)) = postfixe(B010)
+  | | | |      B010
+  | | | |        x
+  | | | | ce qui donne simple : x (c'est une feuille)
+  | | | appel récursif sur le sous arbre droit  : postfixe(sad(B01)) = postfixe(B011)
+  | | | |      B011
+  | | | |        2
+  | | | | ce qui donne simple : 2 (c'est une feuille)
+  | | | effectuer le traitement sur la racine r de B01 : /
+  | | effectuer le traitement sur la racine r de B0 : -
+  | appel récursif sur le sous arbre droit  : postfixe(sad(B)) = postfixe(B1)
+  | |        B1
+  | |         -
+  | |        / \
+  | |       /   \
+  | |      3     y
+  | | appel récursif sur le sous arbre gauche : postfixe(sag(B1)) = postfixe(B10)
+  | | |        B10
+  | | |         3
+  | | | ce qui donne simple : 3 (c'est une feuille)
+  | | appel récursif sur le sous arbre droit  : postfixe(sad(B1)) = postfixe(B11)
+  | | |        B11
+  | | |         y
+  | | | ce qui donne simple : y (c'est une feuille)
+  | | effectuer le traitement sur la racine r de B1 : -
+  | effectuer le traitement sur la racine r de B : x
+
+Les langages de programmation Lisp et Scheme utilisent une notation préfixée avec parenthèses, 
+pour autoriser les opérateurs ayant un nombre d'opérandes variable. Des parenthèses encadrent un opérateur et ses opérandes.
+
+L'expression usuelle 3 * (4 + 5 + 6) se note dans cette famille de langages (* 3 (+ 4 5 6)).
+
+Les langages de programmation Forth, PostScript et le langage RPL des calculatrices HP utilisent une notation postfixée pouvant se passer de parenthèses.
+
+postfixé (Suffixe)
+Le parent est mis après ses enfants. Cette logique semble bien peu humaine mais elle est très utilisée en informatique, pile, Forth, 
+machine virtuelle Java, Postscript et autres. Exemple : 2 3 +
+
+Le langage des sourds-muets possède une syntaxe assez proche de ce type de notation : il plante le décor avant, positionne les acteurs puis indique l'action en dernier.
+Circonfixe
+Le parent se met devant et derrière ses enfants. Ça peut être le même mot (add ... add), ou 2 mots totalement distincts (for...next / begin...end) ou 2 mots dont l'un est forgé sur l'autre (while...wend / while...endwhile / for...rof).
+
+Les symboles circonfixes les plus célèbres sont : (...), [...], {...} et <...>
+En français, la négation d'un verbe est aussi un circonfixe : je ne mange pas de bonbon.
+
+
+Exercice 1 :
+
+B
+a = 00 		0100 = fils gauche de d
+b = 000000	000010 = e
+c = 01100	011100 = le fils sur l'autre branche après e 
+d = 010
+e = 000011
+
+Exercice 2 :
+
+1) Construction de l'arbre 
+√ (x+√y)x(z²+t) 
+
+    √
+     \
+      *
+     / \
+    +   A
+   / \  
+  x   √
+       \
+        y
+
+
+A : 
+
+         +
+        / \
+       ^   t
+      / \
+     z   2
+
+2) Notation préfixe RGD (Racine Gauche Droite (notation polonaise) ) de √ (x+√y)x(z²+t) :
+
+préfixe (RGD) : √ * + x √ y + ^ z 2 t
+sqrt( mult( plus(x,sqrt(y)) , plus(pow(z,2),t) ) )
+
+3) Notation postfixe GDR (Gauche Droite Racine (notation polonaise inversée) ) de √ (x+√y)x(z²+t) :
+
+postfixe (GDR) : x y √ + z 2 ^ t + * √
+
+4) Expliquer comment, en parcourant de gauche à droite l’expression en notation polonaise postfixe
+x = 3, y = 4, z = 2, t = 1
+
+postfixe (GDR) : x y √ + z 2 ^ t + * √
+
+|  | x |  | y |  | √ |  | + |  | z |  | 2 | 2| ^ |  | t | 1| + |  | * |  | √ |  |
+|  |-->|  |-->| 4|-->| 2|-->|  |-->| 2|-->| 2|-->| 4|-->| 4|-->| 5|-->|  |-->|  |
+|  |   | 3|   | 3|   | 3|   | 5|   | 5|   | 5|   | 5|   | 5|   | 5|   |25|   | 5|
++--+   +--+   +--+   +--+   +--+   +--+   +--+   +--+   +--+   +--+   +--+   +--+
+
+Exercice 3 :
+
+notation préfixe : ×× + x√ y + z√t√ + √u√v
+
+× × + x √
+            ×
+           / \
+          /   \
+         /     \
+        ×
+       / \
+      /   \
+     /     \
+    +
+   / \
+  /   \
+ /     \
+x       √
+         \
+          \
+           \
+
+× × + x √ y
+            ×
+           / \
+          /   \
+         /     \
+        ×
+       / \
+      /   \
+     /     \
+    +
+   / \
+  /   \
+ /     \
+x       √
+         \
+          \
+           \
+            y
+
+× × + x √ y +
+            ×
+           / \
+          /   \
+         /     \
+        ×
+       / \
+      /   \
+     /     \
+    /       \
+   +         +
+  / \       / \ 
+ /   \     /   \
+x     √ 
+       \
+        y
+
+× × + x √ y + z
+            ×
+           / \
+          /   \
+         /     \
+        ×
+       / \
+      /   \
+     /     \
+    /       \
+   +         +
+  / \       / \ 
+ /   \     /   \
+x     √   z
+       \
+        y
+
+× × + x √ y + z √
+            ×
+           / \
+          /   \
+         /     \
+        ×
+       / \
+      /   \
+     /     \
+    /       \
+   +         +
+  / \       / \ 
+ /   \     /   \
+x     √   z     √
+       \         \
+        y
+
+× × + x √ y + z √ t
+            ×
+           / \
+          /   \
+         /     \
+        ×
+       / \
+      /   \
+     /     \
+    /       \
+   +         +
+  / \       / \ 
+ /   \     /   \
+x     √   z     √
+       \         \
+        y         t
+× × + x √ y + z √ t √
+            ×
+           / \
+          /   \
+         /     \
+        ×       √
+       / \       \
+      /   \       \
+     /     \       \
+    /       \       \
+   +         +
+  / \       / \ 
+ /   \     /   \
+x     √   z     √
+       \         \
+        y         t
+
+× × + x √ y + z √ t √ +
+            ×
+           / \
+          /   \
+         /     \
+        ×       √
+       / \       \
+      /   \       \
+     /     \       \
+    /       \       \
+   +         +       +
+  / \       / \     / \
+ /   \     /   \   /   \
+x     √   z     √ 
+       \         \
+        y         t
+
+× × + x √ y + z √ t √ + √
+            ×
+           / \
+          /   \
+         /     \
+        ×       √
+       / \       \
+      /   \       \
+     /     \       \
+    /       \       \
+   +         +       +
+  / \       / \     / \
+ /   \     /   \   /   \
+x     √   z     √ √
+       \         \ \
+        y         t
+× × + x √ y + z √ t √ + √ u
+            ×
+           / \
+          /   \
+         /     \
+        ×       √
+       / \       \
+      /   \       \
+     /     \       \
+    /       \       \
+   +         +       +
+  / \       / \     / \
+ /   \     /   \   /   \
+x     √   z     √ √
+       \         \ \
+        y         t u
+
+× × + x √ y + z √ t √ + √ u √
+            ×
+           / \
+          /   \
+         /     \
+        ×       √
+       / \       \
+      /   \       \
+     /     \       \
+    /       \       \
+   +         +       +
+  / \       / \     / \
+ /   \     /   \   /   \
+x     √   z     √ √     √
+       \         \ \     \
+        y         t u     
+
+× × + x √ y + z √ t √ + √ u √ v
+            ×
+           / \
+          /   \
+         /     \
+        ×       √
+       / \       \
+      /   \       \
+     /     \       \
+    /       \       \
+   +         +       +
+  / \       / \     / \
+ /   \     /   \   /   \
+x     √   z     √ √     √
+       \         \ \     \
+        y         t u     v
+
+notation infixe : × × + x √ y + z √ t √ + √ u √ v
+
+Avec la notation habituelle = B
+B
+            ×
+           / \
+          /   \
+         /     \
+        ×       √
+       / \       \
+      /   \       \
+     /     \       \
+    /       \       \
+   +         +       +
+  / \       / \     / \
+ /   \     /   \   /   \
+x     √   z     √ √     √
+       \         \ \     \
+        y         t u     v
+
+B0
+        ×
+       / \
+      /   \
+     /     \
+    /       \
+   +         +
+  / \       / \
+ /   \     /   \
+x     √   z     √
+       \         \
+        y         t
+
+B0 donne x + √ y × z + √ t en infixe
+et en ECP (x + √ y) × (z + √ t)
+
+B00
+   +
+  / \
+ /   \
+x     √
+       \
+        y
+donne x + √ y
+
+B01
+       +
+      / \
+     /   \
+    z     √
+           \
+            t
+donne z + √ t
+
+B1
+  √
+   \
+    \
+     \
+      \
+       +
+      / \
+     /   \
+    √     √
+     \     \
+      u     v
+
+donne √ √ u + √ v en infixe
+et en ECP : √ ( √ u + √ v )
+
+Donc B donne en infixe :
+x + √ y × z + √ t × √ √ u + √ v
+
+en ECP : Expression correctement parenthésée
+( (x + √ y) × (z + √ t)) × √ ( √ u + √ v )
+
+
+Dans un arbre binaire, quand le fil est tout seul, il est forcément à droite.
+
+=============================================
+Exemple en infixe GRD : Gauche Racine Droite
+=============================================
+
+B0
+        ×
+       / \
+      /   \
+     /     \
+    /       \
+   +         +
+  / \       / \
+ /   \     /   \
+x     √   z     √
+       \         \
+        y         t
+
+B0 donne :
+ x y √ +   z t √ +   ×
+ -------   -------   -
+   B00       B01     R
+    G         D      R
+
+B1
+  √
+   \
+    \
+     \
+      \
+       +
+      / \
+     /   \
+    √     √
+     \     \
+      u     v
+
+B1 donne u √ v √ + √
+
+B11
+       +
+      / \
+     /   \
+    √     √
+     \     \
+      u     v
+
+B11 donne : u √ v √ +
+
+
+B donne :
+ x y √ +   z t √ +   ×   u √ v √ +   √
+ -------   -------   -   ---------   -
+   B00       B01     b0     B11      b1
+ ======================  ==============
+          B0                  B1
+
+
+x+y :
+en français :
+   préfixe : on additionne x avec y
+   infixe : x est additionné avec y
+   postfixe : x et y sont additionnés
+
+(En préfixe, c'est empile les opérateurs, en postfixe c'est empile les nombres)
+
+x y √ + z t √ + × u √ v √ + √ ×
+
+|   | x |   | y |   | √ |   |   |   |   |   |   |   |   |   |   |   |
+|   |-->|   |-->| 9 |-->| 3 |-->|   |-->|   |-->|   |-->|   |-->|   |--+
+|   |   | 3 |   | 3 |   | 3 |   |   |   |   |   |   |   |   |   |   |  |
++---+   +---+   +---+   +---+   +---+   +---+   +---+   +---+   +---+  |
+                                                                       | 
+        |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |  |
+        |   |<--|   |<--|   |<--|   |<--|   |<--|   |<--|   |<--|   |<-+
+        |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+        +---+   +---+   +---+   +---+   +---+   +---+   +---+   +---+
+
+|   | + |   | + est opérateur binaire
+| 3 |-->|   | donc on dépile 2 valeurs (ici 3 et 3)
+| 3 |   | 6 | et on leur applique l'opérateur (ici +),
++---+   +---+ et la valeur calculée (ici 3+3 = 6) est empilée
+Remarque :
+|   | - |   | - est opérateur binaire
+| 3 |-->|   | donc on dépile 2 valeurs (ici 3 et 9)
+| 9 |   | 6 | et on leur applique l'opérateur (ici -),
++---+   +---+ et la valeur calculée (ici 9-3 = 6) est empilée
+
+
+x y √ + z t √ + × u √ v √ + √ ×
+
+|   | x |   | y |   | √ |   | + |   | z |   | t |   | √ |   | + |   |
+|   |-->|   |-->| 9 |-->| 3 |-->|   |-->|   |-->|   |-->|   |-->|   |--+
+|   |   | 3 |   | 3 |   | 3 |   | 6 |   |   |   |   |   |   |   |   |  |
++---+   +---+   +---+   +---+   +---+   +---+   +---+   +---+   +---+  |
+                                                                       |
++----------------------------------------------------------------------+
+|
+| ×   |   | u |   | √ |   | v |   | √ |   | + |   | √ |   | × |   |
++---> |   |-->|   |-->|   |-->|   |-->|   |-->|   |-->|   |-->|   |
+      |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+      +---+   +---+   +---+   +---+   +---+   +---+   +---+   +---+
